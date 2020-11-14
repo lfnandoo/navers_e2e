@@ -23,3 +23,18 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("userLogin", () => {
+  cy.request({
+    method: "POST",
+    url: "https://navedex-api.herokuapp.com/v1/users/login",
+    body: {
+      email: "testing-user@nave.rs",
+      password: "nave1234"
+    }
+  }).then(({ body }) => {
+    expect(body.token).is.not.null;
+
+    Cypress.env("userToken", body.token);
+  });
+});

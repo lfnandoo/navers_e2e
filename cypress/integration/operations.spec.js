@@ -18,6 +18,9 @@ describe("Operations", () => {
       expect(response.body).has.property("token");
       expect(response.body.id).is.not.null;
       expect(response.body.token).is.not.null;
+
+      Cypress.env("userLoginToken", response.body.token);
+      Cypress.env("userLoginToken");
     });
   });
 });

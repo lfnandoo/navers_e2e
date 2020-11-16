@@ -95,4 +95,10 @@ describe("Operations", () => {
     cy.get("[data-cy=delete-card]").first().click();
     cy.get("[data-cy=cancel-delete]").click();
   });
+
+  it("should delete card", () => {
+    cy.get("[data-cy=delete-card]").first().click();
+    cy.get("[data-cy=delete]").click();
+    cy.get("[data-cy=go-back]").click();
+  });
 });

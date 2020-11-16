@@ -21,5 +21,4 @@ import "./commands";
 
 beforeEach(() => {
   cy.server();
-  cy.userCredentials();
 });

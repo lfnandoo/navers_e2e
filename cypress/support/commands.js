@@ -24,7 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("userCredentials", () => {
+Cypress.Commands.add("login", () => {
   cy.request({
     method: "POST",
     url: "https://navedex-api.herokuapp.com/v1/users/login",
@@ -39,13 +39,34 @@ Cypress.Commands.add("userCredentials", () => {
     Cypress.env("userToken", body.token);
     Cypress.env("userId", body.id);
   });
-});
 
-Cypress.Commands.add("login", () => {
   cy.visit("https://navers-test-lfnandoo.vercel.app/home", {
     onBeforeLoad: (browser) => {
       browser.localStorage.setItem("@Navers:token", Cypress.env("userToken"));
       browser.localStorage.setItem("@Navers:id", Cypress.env("userId"));
     }
+  });
+});
+
+Cypress.Commands.add("createNaver", () => {
+  cy.request({
+    method: "POST",
+    url: "https://navedex-api.herokuapp.com/v1/navers",
+    headers: {
+      authorization: `Bearer ${Cypress.env("userToken")}`
+    },
+    body: {
+      job_role: "Frontend Developer",
+      admission_date: "12/04/2018",
+      birthdate: "12/04/1992",
+      project: "Pojeto",
+      name: "Testing",
+      url: "https://google.com"
+    }
+  }).then(({ status, body }) => {
+    expect(status).be.equal(200);
+    expect(body.id).is.not.null;
+
+    Cypress.env("cardId", body.id);
   });
 });

@@ -7,7 +7,6 @@ describe("Operations", () => {
     cy.get("[data-cy=email]").type("testing-user@nave.rs");
     cy.get("[data-cy=password]").type("nave1234");
 
-    cy.server();
     cy.route("POST", "**/v1/users/login").as("postLogin");
 
     cy.get("[data-cy=submit]").click();
@@ -48,7 +47,6 @@ describe("Operations", () => {
       .type("https://google.com")
       .should("have.value", "https://google.com");
 
-    cy.server();
     cy.route("POST", "**/navers").as("postNewNaverCard");
 
     cy.get("[data-cy=submit]").click();
@@ -57,14 +55,15 @@ describe("Operations", () => {
       expect(status).be.equal(200);
 
       cy.get("[data-cy=modal]").should("have.length", true);
-      cy.get("[data-cy=go-back]").click();
-      cy.get("[data-cy=go-back-home]").click();
     });
   });
 
   it("should edit naver card", () => {
     cy.login();
-    cy.get("[data-cy=edit-card]").first().click();
+    cy.createNaver();
+    cy.visit(
+      `https://navers-test-lfnandoo.vercel.app/edit/${Cypress.env("cardId")}`
+    );
 
     cy.get('[data-cy="birthdate"]')
       .type("2003-10-01")
@@ -73,23 +72,16 @@ describe("Operations", () => {
       .type("2015-07-05")
       .should("have.value", "2015-07-05");
 
-    cy.url().then((url) =>
-      Cypress.env("cardId", url.match(/\/([^\/]+)\/?$/)[1])
-    );
-
-    cy.server();
     cy.route("PUT", `**/navers/${Cypress.env("cardId")}`).as(
-      "postEditNaverCard"
+      "putEditNaverCard"
     );
 
     cy.get("[data-cy=edit]").click();
 
-    cy.wait("@postEditNaverCard").then(({ status }) => {
+    cy.wait("@putEditNaverCard").then(({ status }) => {
       expect(status).be.equal(200);
 
       cy.get("[data-cy=modal]").should("have.length", true);
-      cy.get("[data-cy=go-back]").click();
-      cy.get("[data-cy=go-back-home]").click();
     });
   });
 
@@ -103,7 +95,7 @@ describe("Operations", () => {
     cy.login();
     cy.get("[data-cy=delete-card]").first().click();
     cy.get("[data-cy=delete]").click();
-    cy.get("[data-cy=go-back]").click();
+    cy.get("[data-cy=modal]").should("have.length", true);
   });
 
   it("should logout", () => {

@@ -85,17 +85,23 @@ describe("Operations", () => {
     });
   });
 
-  it("should cancel delete card", () => {
-    cy.login();
-    cy.get("[data-cy=delete-card]").first().click();
-    cy.get("[data-cy=cancel-delete]").click();
-  });
-
   it("should delete card", () => {
     cy.login();
-    cy.get("[data-cy=delete-card]").first().click();
+    cy.createNaver();
+
+    cy.get(`[data-cy=${Cypress.env("cardId")}]`).click();
+
+    cy.route("DELETE", `**/navers/${Cypress.env("cardId")}`).as(
+      "deleteNaverCard"
+    );
+
     cy.get("[data-cy=delete]").click();
-    cy.get("[data-cy=modal]").should("have.length", true);
+
+    cy.wait("@deleteNaverCard").then(({ status }) => {
+      expect(status).be.equal(200);
+
+      cy.get("[data-cy=modal]").should("have.length", true);
+    });
   });
 
   it("should logout", () => {

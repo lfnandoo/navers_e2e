@@ -25,7 +25,7 @@ describe("Operations", () => {
     });
   });
 
-  it("should create naver card", () => {
+  it.skip("should create naver card", () => {
     cy.get('[data-cy="create-naver"]').click();
 
     cy.get('[data-cy="name"]')
@@ -55,7 +55,37 @@ describe("Operations", () => {
     cy.wait("@postNewNaverCard").then(({ status }) => {
       expect(status).be.equal(200);
 
-      cy.get("[data-cy=modal]");
+      cy.get("[data-cy=modal]").should("have.length", true);
+      cy.get("[data-cy=go-back]").click();
+      cy.get("[data-cy=go-back-home]").click();
+    });
+  });
+
+  it("should edit naver card", () => {
+    cy.get("[data-cy=edit-card]").first().click();
+
+    cy.get('[data-cy="birthdate"]')
+      .type("2003-10-01")
+      .should("have.value", "2003-10-01");
+    cy.get('[data-cy="admission_date"]')
+      .type("2015-07-05")
+      .should("have.value", "2015-07-05");
+
+    cy.url().then((url) =>
+      Cypress.env("cardId", url.match(/\/([^\/]+)\/?$/)[1])
+    );
+
+    cy.server();
+    cy.route("PUT", `**/navers/${Cypress.env("cardId")}`).as(
+      "postEditNaverCard"
+    );
+
+    cy.get("[data-cy=edit]").click();
+
+    cy.wait("@postEditNaverCard").then(({ status }) => {
+      expect(status).be.equal(200);
+
+      cy.get("[data-cy=modal]").should("have.length", true);
       cy.get("[data-cy=go-back]").click();
       cy.get("[data-cy=go-back-home]").click();
     });

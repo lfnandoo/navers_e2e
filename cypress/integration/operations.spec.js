@@ -25,7 +25,7 @@ describe("Operations", () => {
     });
   });
 
-  it.skip("should create naver card", () => {
+  it("should create naver card", () => {
     cy.get('[data-cy="create-naver"]').click();
 
     cy.get('[data-cy="name"]')
@@ -89,5 +89,10 @@ describe("Operations", () => {
       cy.get("[data-cy=go-back]").click();
       cy.get("[data-cy=go-back-home]").click();
     });
+  });
+
+  it("should cancel delete card", () => {
+    cy.get("[data-cy=delete-card]").first().click();
+    cy.get("[data-cy=cancel-delete]").click();
   });
 });

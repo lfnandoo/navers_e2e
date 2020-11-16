@@ -101,4 +101,8 @@ describe("Operations", () => {
     cy.get("[data-cy=delete]").click();
     cy.get("[data-cy=go-back]").click();
   });
+
+  it("should logout", () => {
+    cy.get("[data-cy=leave]").click();
+  });
 });

@@ -20,7 +20,7 @@ Project made with:
 
 ## 📌 Run
 
-For run this project you nedded Git, Node.js and Yarn/Npm and an Android Emulator =)
+For run this project you nedded Git, Node.js and Yarn/Npm =)
 ```bash
 ## Clone repository
 $ git clone https://github.com/lfnandoo/navers_e2e
@@ -43,9 +43,9 @@ $ npm run test
 
 ## 💻 Project
 
-
-Nave.rs challenge: https://github.com/lfnandoo/navers_test
 Nave.rs e2e testing.
+<br>
+Nave.rs challenge: https://github.com/lfnandoo/navers_test
 
 ---
 

@@ -26,6 +26,7 @@ describe("Operations", () => {
   });
 
   it("should create naver card", () => {
+    cy.login();
     cy.get('[data-cy="create-naver"]').click();
 
     cy.get('[data-cy="name"]')
@@ -62,6 +63,7 @@ describe("Operations", () => {
   });
 
   it("should edit naver card", () => {
+    cy.login();
     cy.get("[data-cy=edit-card]").first().click();
 
     cy.get('[data-cy="birthdate"]')
@@ -92,17 +94,20 @@ describe("Operations", () => {
   });
 
   it("should cancel delete card", () => {
+    cy.login();
     cy.get("[data-cy=delete-card]").first().click();
     cy.get("[data-cy=cancel-delete]").click();
   });
 
   it("should delete card", () => {
+    cy.login();
     cy.get("[data-cy=delete-card]").first().click();
     cy.get("[data-cy=delete]").click();
     cy.get("[data-cy=go-back]").click();
   });
 
   it("should logout", () => {
+    cy.login();
     cy.get("[data-cy=leave]").click();
   });
 });

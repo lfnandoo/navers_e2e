@@ -19,7 +19,7 @@ import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-before(() => {
+beforeEach(() => {
   cy.server();
-  cy.userLogin();
+  cy.userCredentials();
 });

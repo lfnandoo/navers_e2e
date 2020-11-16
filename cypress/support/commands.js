@@ -24,7 +24,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("userLogin", () => {
+Cypress.Commands.add("userCredentials", () => {
   cy.request({
     method: "POST",
     url: "https://navedex-api.herokuapp.com/v1/users/login",
@@ -34,7 +34,18 @@ Cypress.Commands.add("userLogin", () => {
     }
   }).then(({ body }) => {
     expect(body.token).is.not.null;
+    expect(body.id).is.not.null;
 
     Cypress.env("userToken", body.token);
+    Cypress.env("userId", body.id);
+  });
+});
+
+Cypress.Commands.add("login", () => {
+  cy.visit("https://navers-test-lfnandoo.vercel.app/home", {
+    onBeforeLoad: (browser) => {
+      browser.localStorage.setItem("@Navers:token", Cypress.env("userToken"));
+      browser.localStorage.setItem("@Navers:id", Cypress.env("userId"));
+    }
   });
 });
